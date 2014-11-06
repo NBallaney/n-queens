@@ -29,6 +29,10 @@
       this.trigger('change');
     },
 
+    toggle: function(row,col) {
+      this.get(row)[col] = + !this.get(row)[col];
+    },
+
     _getFirstRowColumnIndexForMajorDiagonalOn: function(rowIndex, colIndex) {
       return colIndex - rowIndex;
     },
@@ -110,12 +114,16 @@
     hasColConflictAt: function(colIndex) {
       var count = 0;
       var rows = this.rows();
-      for(var rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+      var length=rows.length;
+      for(var rowIndex = 0; rowIndex < length; rowIndex++) {
         if(rows[rowIndex][colIndex] === 1) {
           count++;
+          if(count>1) {
+            return true;
+          }
         }
       }
-      return count > 1;
+      return false;
     },
 
     // test if any columns on this board contain conflicts
