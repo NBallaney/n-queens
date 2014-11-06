@@ -79,12 +79,26 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      var count = 0;
+      var row = this.get(rowIndex);
+      for(var i = 0; i < row.length; i++) {
+        if(row[i] === 1) {
+          count++;
+        }
+      }
+      return count > 1;
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      var rows = this.rows();
+      for(var i = 0; i < rows.length; i++) {
+        if(this.hasRowConflictAt(i)) {
+          return true;
+        }
+      }
+
+      return false;
     },
 
 
@@ -94,12 +108,26 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      var count = 0;
+      var rows = this.rows();
+      for(var rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+        if(rows[rowIndex][colIndex] === 1) {
+          count++;
+        }
+      }
+      return count > 1;
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      var rows = this.rows();
+      for(var i = 0; i < rows.length; i++) {
+        if(this.hasColConflictAt(i)) {
+          return true;
+        }
+      }
+
+      return false;
     },
 
 
@@ -109,7 +137,28 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var rows = this.rows();
+      var colIndex;
+      var rowIndex;
+
+      if(majorDiagonalColumnIndexAtFirstRow < 0) {
+        colIndex = 0;
+        rowIndex = Math.abs(majorDiagonalColumnIndexAtFirstRow);
+      }
+      else if(majorDiagonalColumnIndexAtFirstRow >= 0) {
+        colIndex = majorDiagonalColumnIndexAtFirstRow;
+        rowIndex = 0;
+      }
+
+      while(rowIndex < rows.length - colIndex) {
+        if(rows[rowIndex][colIndex] === 1) {
+          return true;
+        }
+        rowIndex++;
+        colIndex++;
+      }
+
+      return false;
     },
 
     // test if any major diagonals on this board contain conflicts
@@ -144,5 +193,4 @@
       });
     });
   };
-
 }());
